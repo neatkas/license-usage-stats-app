@@ -1,10 +1,12 @@
 import './App.css';
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {Col, Row} from 'bootstrap-4-react';
 import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from 'recharts';
 import dayjs from 'dayjs'
 
 function App() {
+    const [appState, setAppState] = useState();
+
     var [dateFrom, setDateFrom] = useState(() => {
         return dayjs().startOf("month")
     })
@@ -13,13 +15,14 @@ function App() {
     })
     var [period, setPeriod] = useState(1);
 
-    // var dateOptions = {month: 'short', day: 'numeric', year: 'numeric'}
-    const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}, {
-        name: 'Page B',
-        uv: "null",
-        pv: 2400,
-        amt: 2400
-    }, {name: 'Page C', uv: 250, pv: 2400, amt: 2400}]
+    var data = [
+        {name: 'Page A', uv: 400, pv: 2400, amt: 2400},
+        {
+            name: 'Page B',
+            uv: "null",
+            pv: 2400,
+            amt: 2400
+        }, {name: 'Page C', uv: 250, pv: 2400, amt: 2400}]
 
     var changePeriod = e => {
         var newPeriod = e.target.value
@@ -40,14 +43,13 @@ function App() {
     return (
         <div className="App col-11">
             <h1>Stats</h1>
-            {/*<p>From {dateFrom.toLocaleDateString('en-US', dateOptions)} to {dateTo.toLocaleDateString('en-US', dateOptions)}</p>*/}
             <p>From {dateFrom.format("MMM DD, YYYY")} to {dateTo.format("MMM DD, YYYY")}</p>
             <Row justifyContent="lg-start center">
                 <Col col="col auto">
-                    <button className="btn btn-outline-primary" onClick={prevMonthHandler}>&laquo; Prev month</button>
+                    <button className="btn btn-outline-primary mb-3 col-sm-12" onClick={prevMonthHandler}>&laquo; Prev month</button>
                 </Col>
-                <Col col="col auto">
-                    <select className="form-control" onChange={changePeriod}>
+                <Col col="col md-auto col-sm-12">
+                    <select className="form-control mb-3" onChange={changePeriod}>
                         <option value="1">One month</option>
                         <option value="3">One quarter</option>
                         <option value="6">Half year</option>
@@ -55,10 +57,10 @@ function App() {
                     </select>
                 </Col>
                 <Col col="col auto">
-                    <button className="btn btn-outline-primary" onClick={nextMonthHandler}>Next month &raquo;</button>
+                    <button className="btn btn-outline-primary mb-3 col-sm-12" onClick={nextMonthHandler}>Next month &raquo;</button>
                 </Col>
             </Row>
-            <table className="table">
+            <table className="table col-lg-10">
                 <thead>
                 <tr>
                     <th>Product</th>
@@ -118,6 +120,7 @@ function App() {
                     <Bar dataKey="uv" fill="#82ca9d"/>
                 </BarChart>
             </div>
+            <div>{appState}</div>
         </div>
     );
 }
